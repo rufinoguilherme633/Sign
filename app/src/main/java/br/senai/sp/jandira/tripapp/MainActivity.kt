@@ -150,7 +150,10 @@ fun TripAppScreen() {
                     horizontalAlignment = Alignment.End
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = {
+                            val openOther = Intent(context, LoginActivity::class.java)
+                            context.startActivity(openOther)
+                        },
                         modifier = Modifier
                             .size(height = 48.dp, width = 134.dp),
                         shape = RoundedCornerShape(10.dp),

@@ -1,11 +1,15 @@
 package br.senai.sp.jandira.tripapp
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.text.method.TextKeyListener.Capitalize
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,7 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.android.TextLayout
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,8 +34,10 @@ import br.senai.sp.jandira.tripapp.ui.theme.TripAppTheme
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             TripAppTheme {
                 Column() {
@@ -42,11 +52,24 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TripAppScreen() {
 
-    val context2 = LocalContext.current
+    val context = LocalContext.current
 
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
+        Row(
+            horizontalArrangement = Arrangement.End
+        ) {
+            Card(
+                modifier = Modifier
+                    .height(40.dp)
+                    .width(120.dp),
+                shape = RoundedCornerShape(bottomStart = 16.dp),
+                backgroundColor = colorResource(id = R.color.primary_color)
+            ) {
+
+            }
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -54,7 +77,7 @@ fun TripAppScreen() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
 
-            ) {
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.Start
@@ -66,6 +89,7 @@ fun TripAppScreen() {
                     ),
                     color = colorResource(id = R.color.primary_color),
                     fontSize = 48.sp,
+                    fontWeight = FontWeight.Bold
 //                    fontFamily =
                 )
                 Text(
@@ -88,12 +112,20 @@ fun TripAppScreen() {
                             stringResource(id = R.string.email)
                         )
                     },
-                    trailingIcon = { androidx.core.R.drawable.notification_bg },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.email_24),
+                            contentDescription = stringResource(id = R.string.email_description),
+                            tint = colorResource(id = R.color.primary_color)
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     shape = RoundedCornerShape(20.dp)
                 )
                 OutlinedTextField(
-                    modifier = Modifier.width(320.dp).padding(top = 6.dp, bottom = 12.dp),
+                    modifier = Modifier
+                        .width(320.dp)
+                        .padding(top = 6.dp, bottom = 12.dp),
                     value = "",
                     onValueChange = {},
                     label = {
@@ -101,7 +133,13 @@ fun TripAppScreen() {
                             stringResource(id = R.string.password)
                         )
                     },
-                    trailingIcon = { androidx.core.R.drawable.notification_bg },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.lock_24),
+                            contentDescription = stringResource(id = R.string.password_description),
+                            tint = colorResource(id = R.color.primary_color)
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     shape = RoundedCornerShape(20.dp)
                 )
@@ -112,22 +150,31 @@ fun TripAppScreen() {
                     horizontalAlignment = Alignment.End
                 ) {
                     Button(
-                        onClick = {
-                            val openOther = Intent(context2, SignUpActivity::class.java)
-                            context2.startActivity(openOther)
-                        },
+                        onClick = {},
                         modifier = Modifier
                             .size(height = 48.dp, width = 134.dp),
-
-                        shape = RoundedCornerShape(10.dp)
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(colorResource(id = R.color.primary_color))
 
                     ) {
-                        Text(
-                            stringResource(id = R.string.sign_in),
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            //capitalizacao
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            Text(
+                                stringResource(id = R.string.sign_in).uppercase(),
+                                color = Color.White,
+                                fontSize = 16.sp,
+
+                                )
+                            Icon(
+                                painter = painterResource(id = R.drawable.forward_24),
+                                contentDescription = stringResource(
+                                    id = R.string.arrow_description
+                                ),
+                                tint = Color.White
+                            )
+                        }
                     }
                     Row(
                         modifier = Modifier.padding(top = 20.dp)
@@ -141,7 +188,11 @@ fun TripAppScreen() {
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            stringResource(
+                            modifier = Modifier.clickable {
+                                val openOther = Intent(context, SignUpActivity::class.java)
+                                context.startActivity(openOther)
+                            },
+                            text = stringResource(
                                 id = R.string.sign_up
                             ),
                             color = colorResource(id = R.color.primary_color),
@@ -149,6 +200,23 @@ fun TripAppScreen() {
                         )
                     }
                 }
+            }
+
+        }
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.Bottom
+
+        ) {
+            Card(
+                modifier = Modifier
+                    .height(40.dp)
+                    .width(120.dp),
+                shape = RoundedCornerShape(topEnd = 16.dp),
+                backgroundColor = colorResource(id = R.color.primary_color)
+            ) {
+
             }
         }
     }

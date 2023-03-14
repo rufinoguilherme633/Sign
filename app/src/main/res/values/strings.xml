@@ -13,4 +13,9 @@
     <string name="over_18">Over 18?</string>
     <string name="create_account">Create a new account</string>
     <string name="already_have_account">Already have an account?</string>
+    <string name="email_description">E-mail icon inside textField</string>
+    <string name="password_description">Password icon inside textField</string>
+    <string name="arrow_description">Arrow icon inside textField</string>
+    <string name="user_description">User icon inside textField</string>
+    <string name="phone_description">Phone icon inside textField</string>
 </resources>

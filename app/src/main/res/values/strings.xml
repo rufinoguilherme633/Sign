@@ -24,4 +24,8 @@
     <string name="location_description">Location Icon</string>
     <string name="youre_in_paris">You\'re in Paris</string>
     <string name="my_trips">My Trips</string>
+    <string name="categories">Categories</string>
+    <string name="search_your_destiny">Search your destiny</string>
+    <string name="search_your_destiny_description">Search icon inside textField</string>
+    <string name="past_trips">Past Trips</string>
 </resources>

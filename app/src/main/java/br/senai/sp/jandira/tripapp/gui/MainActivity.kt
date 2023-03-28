@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.tripapp
+package br.senai.sp.jandira.tripapp.gui
 
 import android.content.Context
 import android.content.Intent
@@ -30,6 +30,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.tripapp.R
+import br.senai.sp.jandira.tripapp.components.BottomShape
+import br.senai.sp.jandira.tripapp.components.TopShape
 import br.senai.sp.jandira.tripapp.ui.theme.TripAppTheme
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
@@ -60,15 +63,7 @@ fun TripAppScreen() {
         Row(
             horizontalArrangement = Arrangement.End
         ) {
-            Card(
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(120.dp),
-                shape = RoundedCornerShape(bottomStart = 16.dp),
-                backgroundColor = colorResource(id = R.color.primary_color)
-            ) {
-
-            }
+            TopShape()
         }
         Column(
             modifier = Modifier
@@ -90,7 +85,6 @@ fun TripAppScreen() {
                     color = colorResource(id = R.color.primary_color),
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold
-//                    fontFamily =
                 )
                 Text(
                     stringResource(id = R.string.please_sign_in),
@@ -120,7 +114,11 @@ fun TripAppScreen() {
                         )
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    shape = RoundedCornerShape(20.dp)
+                    shape = RoundedCornerShape(20.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorResource(id = R.color.primary_color),
+                        unfocusedBorderColor = colorResource(id = R.color.primary_color)
+                    )
                 )
                 OutlinedTextField(
                     modifier = Modifier
@@ -141,7 +139,11 @@ fun TripAppScreen() {
                         )
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    shape = RoundedCornerShape(20.dp)
+                    shape = RoundedCornerShape(20.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = colorResource(id = R.color.primary_color),
+                        unfocusedBorderColor = colorResource(id = R.color.primary_color)
+                    )
                 )
                 Column(
                     modifier = Modifier
@@ -212,15 +214,7 @@ fun TripAppScreen() {
             verticalAlignment = Alignment.Bottom
 
         ) {
-            Card(
-                modifier = Modifier
-                    .height(40.dp)
-                    .width(120.dp),
-                shape = RoundedCornerShape(topEnd = 16.dp),
-                backgroundColor = colorResource(id = R.color.primary_color)
-            ) {
-
-            }
+            BottomShape()
         }
     }
 }

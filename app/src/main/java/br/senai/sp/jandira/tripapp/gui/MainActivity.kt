@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.text.method.TextKeyListener.Capitalize
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -14,7 +16,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +28,7 @@ import androidx.compose.ui.text.android.TextLayout
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +36,8 @@ import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.tripapp.R
 import br.senai.sp.jandira.tripapp.components.BottomShape
 import br.senai.sp.jandira.tripapp.components.TopShape
+import br.senai.sp.jandira.tripapp.model.User
+import br.senai.sp.jandira.tripapp.repository.UserRepository
 import br.senai.sp.jandira.tripapp.ui.theme.TripAppTheme
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
@@ -54,6 +59,14 @@ class MainActivity : ComponentActivity() {
 @Preview(showSystemUi = true)
 @Composable
 fun TripAppScreen() {
+
+    var emailState by remember {
+        mutableStateOf("")
+    }
+
+    var passwordState by remember {
+        mutableStateOf("")
+    }
 
     val context = LocalContext.current
 
@@ -99,8 +112,8 @@ fun TripAppScreen() {
 
                 OutlinedTextField(
                     modifier = Modifier.width(320.dp),
-                    value = "",
-                    onValueChange = {},
+                    value = emailState,
+                    onValueChange = {emailState = it},
                     label = {
                         Text(
                             stringResource(id = R.string.email)
@@ -124,8 +137,8 @@ fun TripAppScreen() {
                     modifier = Modifier
                         .width(320.dp)
                         .padding(top = 6.dp, bottom = 12.dp),
-                    value = "",
-                    onValueChange = {},
+                    value = passwordState,
+                    onValueChange = { passwordState = it },
                     label = {
                         Text(
                             stringResource(id = R.string.password)
@@ -138,6 +151,7 @@ fun TripAppScreen() {
                             tint = colorResource(id = R.color.primary_color)
                         )
                     },
+                    visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     shape = RoundedCornerShape(20.dp),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -153,8 +167,11 @@ fun TripAppScreen() {
                 ) {
                     Button(
                         onClick = {
-                            val openOther = Intent(context, LoginActivity::class.java)
-                            context.startActivity(openOther)
+                            openAccount(
+                                emailState,
+                                passwordState,
+                                context
+                            )
                         },
                         modifier = Modifier
                             .size(height = 48.dp, width = 134.dp),
@@ -217,4 +234,34 @@ fun TripAppScreen() {
             BottomShape()
         }
     }
+
+    val userRepository = UserRepository(context)
+
+    //deketar usuario
+    val user = userRepository.findUserByEmail("feijo@gmail.com")
+
+
+}
+
+fun openAccount(
+    email: String,
+    password: String,
+    context: Context
+) {
+
+    val userRepository = UserRepository(context)
+
+    //verificar se o usuario ja existe
+    val user = userRepository.authenticate(email, password)
+
+    Log.i("DS2M", "${user.toString()}")
+
+    if (user != null) {
+        Toast.makeText(context, "Ir para tela de login", Toast.LENGTH_LONG).show()
+        val openOther = Intent(context, LoginActivity::class.java)
+        context.startActivity(openOther)
+    } else {
+        Toast.makeText(context, "User not exists", Toast.LENGTH_LONG).show()
+    }
+
 }

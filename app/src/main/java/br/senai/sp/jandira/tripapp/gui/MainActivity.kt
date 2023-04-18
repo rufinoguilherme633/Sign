@@ -259,6 +259,8 @@ fun openAccount(
     if (user != null) {
         Toast.makeText(context, "Ir para tela de login", Toast.LENGTH_LONG).show()
         val openOther = Intent(context, LoginActivity::class.java)
+            .putExtra("id" , user.id)
+            .putExtra("id" , user.userName)
         context.startActivity(openOther)
     } else {
         Toast.makeText(context, "User not exists", Toast.LENGTH_LONG).show()

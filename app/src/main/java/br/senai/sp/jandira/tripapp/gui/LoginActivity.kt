@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,11 +21,14 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.tripapp.R
 import br.senai.sp.jandira.tripapp.model.Category
+import br.senai.sp.jandira.tripapp.model.Trip
 import br.senai.sp.jandira.tripapp.repository.CategoryRepository
+import br.senai.sp.jandira.tripapp.repository.TripRepository
 import br.senai.sp.jandira.tripapp.ui.theme.TripAppTheme
 
 class LoginActivity : ComponentActivity() {
@@ -36,7 +40,9 @@ intent.extras
         setContent {
             TripAppTheme {
                 Column() {
-                    LoginScreen(CategoryRepository.getCategories())
+                    LoginScreen(
+                        CategoryRepository.getCategories(), // quem chamar tem que passar uma lista de categorias e de viajens
+                        TripRepository.getTrips())
                 }
             }
         }
@@ -45,7 +51,7 @@ intent.extras
 
 //@Preview(showSystemUi = true)
 @Composable
-fun LoginScreen(categories: List<Category>) {
+fun LoginScreen(categories: List<Category> , trips: List<Trip>) {
 //    Surface(
 //        modifier = Modifier.fillMaxSize()
 //    ) {
@@ -198,7 +204,34 @@ Column(
                     Icon(imageVector = Icons.Default.Search, contentDescription ="" )
                 }
             }
+
             )
+        Text(text = stringResource(id = R.string.past_trips))
+LazyColumn() {
+    items(trips) {
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+            backgroundColor = Color.Cyan
+        ) {
+            Column(modifier = Modifier.padding(8.dp)) {
+    Image(painter = painterResource(id = R.drawable.no_photography_24), contentDescription ="" )
+
+                Text(text = "${it.location}, ${it.startDate.year}")
+                Text(text = "${it.description}")
+                Text(
+                    text = "${it.startDate} - ${it.endDate}",
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+            }
+            
+        }
+    }
+}
+
+
         
     }
 }

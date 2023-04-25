@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -157,7 +158,7 @@ items(categories) {//a cadaiteracao me devolve uma categoria
         backgroundColor = Color.Magenta,
 
     ) {
-Column() {
+Column( horizontalAlignment = Alignment.CenterHorizontally) {
     Image(painter = it.categoryIcon, contentDescription =it.categoryName )
 
     //Text(text = "${it.id} - ${it.categoryName}") //it ->

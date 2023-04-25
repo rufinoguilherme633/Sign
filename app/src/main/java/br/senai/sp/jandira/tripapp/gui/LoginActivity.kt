@@ -154,15 +154,24 @@ fun LoginScreen(categories: List<Category>) {
 items(categories) {//a cadaiteracao me devolve uma categoria
     Card(
         modifier = Modifier
-            .size(width = 120.dp, height = 100.dp),
-        backgroundColor = Color.Magenta,
+            .size(width = 109.dp, height = 100.dp)
+            .padding(vertical = 8.dp, horizontal = 3.dp),
+        backgroundColor = Color(206,6,240),
 
     ) {
-Column( horizontalAlignment = Alignment.CenterHorizontally) {
+Column(
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.Center
+    ) {
     Image(painter = it.categoryIcon, contentDescription =it.categoryName )
 
     //Text(text = "${it.id} - ${it.categoryName}") //it ->
-    Text(text = "${it.categoryName}") //it ->
+    Text(
+        text = "${it.categoryName}",
+        fontSize = 14.sp,
+        color = Color.White
+
+    ) //it ->
 }
     }
 }
